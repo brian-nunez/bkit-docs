@@ -1,0 +1,95 @@
+site_name: BKit
+site_description: Composable Go building blocks for modern services.
+site_url: https://brian-nunez.github.io/bkit-docs/
+repo_url: https://github.com/brian-nunez/bkit-docs
+repo_name: brian-nunez/bkit-docs
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: en
+  icon:
+    logo: material/cube-outline
+    repo: fontawesome/brands/github
+  font:
+    text: Inter
+    code: JetBrains Mono
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  features:
+    - content.code.copy
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.share
+    - search.suggest
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/site.js
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/brian-nunez
+      name: BKit on GitHub
+
+copyright: Copyright &copy; 2026 BKit contributors
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - bconfig:
+      - bconfig/index.md
+      - Sources: bconfig/sources.md
+  - bkv:
+      - bkv/index.md
+      - Drivers: bkv/drivers.md
+  - bdb:
+      - bdb/index.md
+      - Drivers: bdb/drivers.md
+  - Examples:
+      - Config + KV + DB: examples/config-kv-db.md
+      - Service Bootstrap: examples/service-bootstrap.md
