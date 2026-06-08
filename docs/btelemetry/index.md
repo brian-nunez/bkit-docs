@@ -2,6 +2,8 @@
 
 `btelemetry` provides a unified observability wrapper for Go applications using OpenTelemetry. It supports metrics generation (Prometheus and OTLP push) and distributed tracing (OTLP and console log fallbacks).
 
+[View source on GitHub](https://github.com/brian-nunez/bhttp){ .md-button }
+
 ## Configuration
 
 The package is configured via a standard config structure:

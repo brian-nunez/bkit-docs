@@ -2,6 +2,8 @@
 
 `bsuite` acts as the configuration-driven glue layer for the BKit ecosystem. It reads a `bconfig.Config` configuration, automatically parses the configuration keys, and initializes telemetry (`btelemetry`), databases (`bdb`), and key-value stores (`bkv`).
 
+[View source on GitHub](https://github.com/brian-nunez/bhttp){ .md-button }
+
 ## Configuration Keys
 
 `bsuite` hydrates BKit components based on standard dot-path configuration keys:
