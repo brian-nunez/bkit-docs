@@ -2,6 +2,8 @@
 
 `brun` is a lightweight, concurrent task runner and lifecycle orchestrator for Go services. It utilizes `golang.org/x/sync/errgroup` underneath to ensure that multiple runnables (servers, consumers, workers) start concurrently, propagate context cleanly, and stop gracefully.
 
+[View source on GitHub](https://github.com/brian-nunez/bhttp){ .md-button }
+
 ## Runnable Contract
 
 Any component registered with the runner must satisfy the `brun.Runnable` interface:
