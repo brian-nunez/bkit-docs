@@ -41,6 +41,8 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/brian-nunez/bconfig"
@@ -79,6 +81,32 @@ func (w *BackgroundWorker) Run(ctx context.Context) error {
 				log.Printf("db check failed: %v", err)
 			}
 			log.Println("Worker task executed successfully.")
+		}
+	}
+}
+
+type KVWatcherWorker struct {
+	suite *bsuite.Service
+}
+
+func (w *KVWatcherWorker) Run(ctx context.Context) error {
+	ticker := time.NewTicker(5 * time.Second)
+	defer ticker.Stop()
+
+	kv := w.suite.KV()
+
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("KV Watcher worker shutting down...")
+			return nil
+		case <-ticker.C:
+			val, err := kv.Get(ctx, "last_tick")
+			if err != nil {
+				log.Printf("worker error: %v", err)
+			}
+
+			log.Printf("Last tick value from KV store: %s", val)
 		}
 	}
 }
@@ -128,7 +156,12 @@ func (s *APIServer) Run(ctx context.Context) error {
 }
 
 func main() {
-	ctx := context.Background()
+	ctx, stop := signal.NotifyContext(
+		context.Background(),
+		syscall.SIGINT,
+		syscall.SIGTERM,
+	)
+	defer stop()
 
 	// 1. Load configuration
 	cfg, err := bconfig.New(file.Source("config.yaml"))
@@ -151,6 +184,7 @@ func main() {
 	manager.Register(
 		&BackgroundWorker{suite: service},
 		&APIServer{suite: service},
+		&KVWatcherWorker{suite: service},
 	)
 
 	// 4. Start concurrent lifecycle manager
