@@ -90,6 +90,9 @@ nav:
   - bdb:
       - bdb/index.md
       - Drivers: bdb/drivers.md
+  - btelemetry: btelemetry/index.md
+  - brun: brun/index.md
+  - bsuite: bsuite/index.md
   - Examples:
       - Config + KV + DB: examples/config-kv-db.md
       - Service Bootstrap: examples/service-bootstrap.md
