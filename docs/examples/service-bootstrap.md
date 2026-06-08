@@ -1,6 +1,37 @@
-# Service bootstrap
+# Service Bootstrap & Lifecycle
 
-A service bootstrap should load configuration first, construct dependencies, verify health, and close resources in reverse order.
+This example demonstrates how to bootstrap a complete BKit application stack. We will use `bconfig` to load settings, `bsuite` to hydrate database, key-value, and telemetry connections, and `brun` to manage the concurrent lifecycles of an API server and background worker.
+
+## Configuration File
+
+The application is configured using a unified YAML file:
+
+```yaml title="config.yaml"
+telemetry:
+  enabled: true
+  service_name: "payment-api"
+  environment: "production"
+  enable_trace: true
+  enable_metrics: true
+  metric_mode: "pull"
+  enable_stdout: false
+
+kv:
+  enabled: true
+  driver: "local"
+
+db:
+  enabled: true
+  driver: "sqlite"
+  sqlite:
+    path: "data.db"
+  max_open_conns: 25
+  max_idle_conns: 10
+```
+
+## Bootstrap Implementation
+
+The entry point loads the config, boots up the BSuite service container, wraps our servers and tasks into runnables, and launches them using the runner manager:
 
 ```go
 package main
@@ -9,69 +40,124 @@ import (
 	"context"
 	"errors"
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/brian-nunez/bconfig"
-	"github.com/brian-nunez/bconfig/drivers/env"
 	"github.com/brian-nunez/bconfig/drivers/file"
-	"github.com/brian-nunez/bdb"
-	dbsqlite "github.com/brian-nunez/bdb/drivers/sqlite"
-	"github.com/brian-nunez/bkv"
-	"github.com/brian-nunez/bkv/drivers/redis"
+	"github.com/brian-nunez/bhttp/pkg/brun"
+	"github.com/brian-nunez/bhttp/pkg/bsuite"
+
+	// Drivers self-register when imported
+	_ "github.com/brian-nunez/bdb/drivers/sqlite"
+	_ "github.com/brian-nunez/bkv/drivers/local"
 )
 
-func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+// BackgroundWorker implements brun.Runnable
+type BackgroundWorker struct {
+	suite *bsuite.Service
+}
 
-	cfg, err := bconfig.LoadWithOptions(
-		ctx,
-		[]bconfig.Source{
-			file.Source("config.yaml"),
-			env.Source("BAPP_"),
-		},
-		bconfig.WithValidator(func(cfg *bconfig.Config) error {
-			if cfg.String("database.path") == "" {
-				return errors.New("database.path is required")
-			}
-			if cfg.String("bapp_redis_addr") == "" {
-				return errors.New("BAPP_REDIS_ADDR is required")
-			}
+func (w *BackgroundWorker) Run(ctx context.Context) error {
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	kv := w.suite.KV()
+	db := w.suite.DB()
+
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("Background worker shutting down...")
 			return nil
-		}),
+		case <-ticker.C:
+			// Perform routine task, e.g. cache validation
+			if err := kv.Set(ctx, "last_tick", time.Now().String(), 0); err != nil {
+				log.Printf("worker error: %v", err)
+			}
+			if err := db.Ping(ctx); err != nil {
+				log.Printf("db check failed: %v", err)
+			}
+			log.Println("Worker task executed successfully.")
+		}
+	}
+}
+
+// APIServer wraps our HTTP server and implements brun.Runnable
+type APIServer struct {
+	suite *bsuite.Service
+}
+
+func (s *APIServer) Run(ctx context.Context) error {
+	mux := http.NewServeMux()
+
+	// Expose Prometheus metrics scraping endpoint
+	tel := s.suite.Telemetry()
+	if tel != nil {
+		mux.Handle("/metrics", tel.HTTPHandler())
+	}
+
+	// Application endpoint
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("healthy"))
+	})
+
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: mux,
+	}
+
+	errChan := make(chan error, 1)
+	go func() {
+		log.Println("API Server listening on :8080...")
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			errChan <- err
+		}
+	}()
+
+	select {
+	case <-ctx.Done():
+		log.Println("API Server shutting down gracefully...")
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		return srv.Shutdown(shutdownCtx)
+	case err := <-errChan:
+		return err
+	}
+}
+
+func main() {
+	ctx := context.Background()
+
+	// 1. Load configuration
+	cfg, err := bconfig.New(file.Source("config.yaml"))
+	if err != nil {
+		log.Fatalf("failed to load configuration: %v", err)
+	}
+
+	// 2. Hydrate service container (automatically boots telemetry, KV, DB)
+	service, err := bsuite.New(ctx, cfg)
+	if err != nil {
+		log.Fatalf("failed to bootstrap service: %v", err)
+	}
+	defer func() {
+		log.Println("Releasing database and telemetry connections...")
+		service.Shutdown(ctx)
+	}()
+
+	// 3. Register running tasks
+	manager := brun.New()
+	manager.Register(
+		&BackgroundWorker{suite: service},
+		&APIServer{suite: service},
 	)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	db, err := bdb.New(dbsqlite.Config{
-		Path: cfg.String("database.path"),
-	})
-	if err != nil {
-		log.Fatal(err)
+	// 4. Start concurrent lifecycle manager
+	log.Println("Starting BKit application...")
+	if err := manager.Start(ctx); err != nil && !errors.Is(err, context.Canceled) {
+		log.Fatalf("Application stopped with error: %v", err)
 	}
-	defer db.Close()
-
-	store, err := bkv.New(redis.Config{
-		Addr:   cfg.String("bapp_redis_addr"),
-		Prefix: "service",
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer store.Close()
-
-	if err := db.Ping(ctx); err != nil {
-		log.Fatal(err)
-	}
-	if err := store.HealthCheck(ctx); err != nil {
-		log.Fatal(err)
-	}
-
-	// Start the service only after dependencies are ready.
+	log.Println("Application exited cleanly.")
 }
 ```
-
-The environment key is intentionally `bapp_redis_addr`: the current environment source retains prefixes and produces flat, lowercased keys.
-
-Graceful signal handling and HTTP server shutdown are application concerns; BKit currently provides no combined service lifecycle package.
