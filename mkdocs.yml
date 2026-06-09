@@ -80,6 +80,11 @@ copyright: Copyright &copy; 2026 BKit contributors
 
 nav:
   - Home: index.md
+  - Templates:
+      - API Template: api-template.md
+  - Examples:
+      - Config + KV + DB: examples/config-kv-db.md
+      - Service Bootstrap: examples/service-bootstrap.md
   - Getting Started: getting-started.md
   - bconfig:
       - bconfig/index.md
@@ -93,6 +98,3 @@ nav:
   - btelemetry: btelemetry/index.md
   - brun: brun/index.md
   - bsuite: bsuite/index.md
-  - Examples:
-      - Config + KV + DB: examples/config-kv-db.md
-      - Service Bootstrap: examples/service-bootstrap.md

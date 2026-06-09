@@ -13,7 +13,7 @@ hide:
         <p class="bkit-hero__lead">Configuration, storage, and database primitives with small APIs and explicit boundaries.</p>
         <div class="bkit-actions">
           <a class="md-button md-button--primary" href="getting-started/">Get started</a>
-          <a class="md-button" href="https://github.com/brian-nunez">View on GitHub</a>
+          <a class="md-button" href="api-template/">Start building</a>
         </div>
       </div>
 
@@ -68,6 +68,12 @@ hide:
         <span class="bkit-package__number">03</span>
         <strong>bdb</strong>
         <span>SQL connections, queries, transactions, and pools.</span>
+        <span class="bkit-package__arrow">→</span>
+      </a>
+      <a class="bkit-package" href="api-template/">
+        <span class="bkit-package__number">04</span>
+        <strong>API template</strong>
+        <span>See the complete ecosystem composed into one open, production-ready starting point.</span>
         <span class="bkit-package__arrow">→</span>
       </a>
     </div>
@@ -143,7 +149,7 @@ hide:
       <p>Choose a library, install its drivers, and keep the rest of your architecture yours.</p>
       <div class="bkit-actions">
         <a class="md-button md-button--primary" href="getting-started/">Read getting started</a>
-        <a class="md-button" href="https://github.com/brian-nunez">View on GitHub</a>
+        <a class="md-button" href="api-template/">Explore the API template</a>
       </div>
     </div>
   </section>
