@@ -96,5 +96,6 @@ nav:
       - bdb/index.md
       - Drivers: bdb/drivers.md
   - btelemetry: btelemetry/index.md
+  - baccess: baccess/index.md
   - brun: brun/index.md
   - bsuite: bsuite/index.md
