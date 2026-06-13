@@ -88,3 +88,16 @@ The constructor returns the following error if component initialization fails (w
 ```go
 bsuite.ErrSuiteInit
 ```
+
+---
+
+## The Journey Assembled
+
+`bsuite` is an optional convenience at the end of the journey, not a requirement
+for using BKit. It hydrates the infrastructure it owns while Objex,
+authorization policy, HTTP handlers, and long-running processes remain explicit
+parts of your application composition.
+
+Continue to the **[BKit API Template](../api-template.md)** to see configuration
+become infrastructure, infrastructure become application services, and servers
+and workers share one graceful lifecycle.

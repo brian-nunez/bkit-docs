@@ -1,6 +1,8 @@
 # BKit documentation
 
-Central documentation portal for the BKit ecosystem: composable Go libraries for configuration, key/value storage, and databases.
+Central documentation portal for the BKit ecosystem: composable Go libraries
+for configuration, data storage, object storage, authorization, observability,
+and service lifecycle management.
 
 ## Run with Docker Compose
 
@@ -58,3 +60,6 @@ directory.
 - [bconfig](https://github.com/brian-nunez/bconfig)
 - [bkv](https://github.com/brian-nunez/bkv)
 - [bdb](https://github.com/brian-nunez/bdb)
+- [objex](https://github.com/brian-nunez/objex)
+- [baccess](https://github.com/brian-nunez/baccess)
+- [bhttp](https://github.com/brian-nunez/bhttp)

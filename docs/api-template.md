@@ -12,6 +12,7 @@ The template brings together the full BKit stack with an Echo HTTP server, backg
 - `bsuite` hydrates the selected database, key/value store, and telemetry services.
 - `brun` gives the HTTP server and background worker one graceful lifecycle.
 - `bdb`, `bkv`, and `btelemetry` remain focused behind their own small APIs.
+- `baccess` can guard handlers and resource operations with composable policy.
 
 Around those pieces, the template includes PostgreSQL, MariaDB, Redis, SQLite, OpenTelemetry, Prometheus, Templ, Tailwind CSS, templUI, HTMX, hot reloading, and a production container build.
 
@@ -32,6 +33,8 @@ bconfig ──> bsuite ──> bdb
                   ├──> bkv
                   └──> btelemetry
 
+request ──> baccess ──> authorized application operation
+
 HTTP server ─┐
              ├──> brun ──> one lifecycle
 worker ──────┘
@@ -44,6 +47,12 @@ That separation is what lets the pieces mesh so naturally. They share familiar G
 The template is complete, but it is not closed. Drivers are selected through configuration. Long-running processes implement a small `Run(context.Context) error` contract. The service container exposes the infrastructure your code needs without dictating how the rest of the application must be designed.
 
 You can begin with the entire stack or adopt one package at a time. You can move from local storage to Redis, from SQLite to PostgreSQL, or from one runnable process to several while preserving the shape of the application around them.
+
+The wider BKit journey remains open around the template. Add `objex` when the
+service needs filesystem, S3, or MinIO objects. Apply `baccess` at handler and
+service boundaries when operations need role, ownership, or resource policy.
+Those capabilities stay explicit in application code instead of being hidden
+inside the service container.
 
 This is the freedom BKit is built for: useful defaults without permanent decisions, shared structure without tight coupling, and infrastructure that supports the service instead of becoming the service.
 

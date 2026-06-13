@@ -10,7 +10,7 @@ hide:
       <div class="bkit-hero__copy">
         <p class="bkit-kicker">Composable Go building blocks</p>
         <h1>BKit</h1>
-        <p class="bkit-hero__lead">Configuration, storage, and database primitives with small APIs and explicit boundaries.</p>
+        <p class="bkit-hero__lead">A service-building journey from configuration to storage, authorization, observability, and graceful runtime ownership.</p>
         <div class="bkit-actions">
           <a class="md-button md-button--primary" href="getting-started/">Get started</a>
           <a class="md-button" href="api-template/">Start building</a>
@@ -37,6 +37,11 @@ hide:
           <span class="bkit-node__index">03</span>
           <strong>bdb</strong>
           <small>sqlite · postgres · mariadb</small>
+        </div>
+        <div class="bkit-node bkit-node--objex">
+          <span class="bkit-node__index">04</span>
+          <strong>objex</strong>
+          <small>filesystem · s3 · minio</small>
         </div>
       </div>
     </div>
@@ -70,8 +75,38 @@ hide:
         <span>SQL connections, queries, transactions, and pools.</span>
         <span class="bkit-package__arrow">→</span>
       </a>
-      <a class="bkit-package" href="api-template/">
+      <a class="bkit-package" href="objex/">
         <span class="bkit-package__number">04</span>
+        <strong>objex</strong>
+        <span>Stream objects through filesystem, S3, or MinIO.</span>
+        <span class="bkit-package__arrow">→</span>
+      </a>
+      <a class="bkit-package" href="baccess/">
+        <span class="bkit-package__number">05</span>
+        <strong>baccess</strong>
+        <span>Compose role and attribute predicates into authorization policy.</span>
+        <span class="bkit-package__arrow">→</span>
+      </a>
+      <a class="bkit-package" href="btelemetry/">
+        <span class="bkit-package__number">06</span>
+        <strong>btelemetry</strong>
+        <span>Add OpenTelemetry metrics and tracing at the service boundary.</span>
+        <span class="bkit-package__arrow">→</span>
+      </a>
+      <a class="bkit-package" href="brun/">
+        <span class="bkit-package__number">07</span>
+        <strong>brun</strong>
+        <span>Give servers and workers one context-driven lifecycle.</span>
+        <span class="bkit-package__arrow">→</span>
+      </a>
+      <a class="bkit-package" href="bsuite/">
+        <span class="bkit-package__number">08</span>
+        <strong>bsuite</strong>
+        <span>Hydrate the common service infrastructure from configuration.</span>
+        <span class="bkit-package__arrow">→</span>
+      </a>
+      <a class="bkit-package" href="api-template/">
+        <span class="bkit-package__number">09</span>
         <strong>API template</strong>
         <span>See the complete ecosystem composed into one open, production-ready starting point.</span>
         <span class="bkit-package__arrow">→</span>
@@ -85,7 +120,7 @@ hide:
         <p class="bkit-section__eyebrow">Architecture</p>
         <h2>Clear roles.<br>Loose coupling.</h2>
       </div>
-      <p>The packages never require one another. Your startup code composes them while each library stays replaceable.</p>
+      <p>The journey is cohesive without making the packages dependent. Your startup code composes each concern while every boundary stays visible and replaceable.</p>
     </div>
 
     <div class="bkit-flow">
@@ -106,6 +141,12 @@ hide:
         <strong>Persistence</strong>
         <p>Work with SQL databases through standard Go concepts.</p>
       </div>
+      <span class="bkit-flow__arrow">→</span>
+      <div class="bkit-flow__step">
+        <code>objex</code>
+        <strong>Object storage</strong>
+        <p>Keep files and binary assets behind one streaming interface.</p>
+      </div>
     </div>
   </section>
 
@@ -122,7 +163,7 @@ hide:
       <div class="bkit-principle">
         <span>01 / independent</span>
         <h3>Adopt incrementally</h3>
-        <p>Use configuration, key/value storage, or databases independently.</p>
+        <p>Use configuration, data, authorization, telemetry, or lifecycle packages independently.</p>
       </div>
       <div class="bkit-principle">
         <span>02 / explicit</span>
@@ -137,7 +178,7 @@ hide:
       <div class="bkit-principle">
         <span>04 / idiomatic</span>
         <h3>Keep Go visible</h3>
-        <p>Contexts, errors, database/sql, and lifecycle ownership stay familiar.</p>
+        <p>Contexts, readers, errors, database/sql, and lifecycle ownership stay familiar.</p>
       </div>
     </div>
   </section>

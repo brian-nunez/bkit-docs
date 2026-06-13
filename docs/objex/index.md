@@ -380,3 +380,13 @@ objex.ErrInvalidFile
 Not every backend error is normalized. AWS SDK errors and filesystem errors may
 be returned directly, so retain a general error path after checking sentinels.
 
+---
+
+## Next Step: Authorization
+
+The service now has configuration, temporary state, structured persistence, and
+binary object storage. The next question is no longer where data lives, but who
+may act on it.
+
+Proceed to **[Step 5: Authorization with baccess](../baccess/index.md)** to
+compose role checks with ownership and resource predicates.

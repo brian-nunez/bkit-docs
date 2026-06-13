@@ -2,7 +2,9 @@
 
 `bdb` is a driver-based wrapper around Go's `database/sql` package. It provides a clean, unified interface for SQL execution, transactions, connection pool management, and statistics.
 
-In our guided onboarding story, you connect `bdb` to your database using the settings loaded in **[Step 1: Configuration with bconfig](../bconfig/index.md)** alongside your temporary cache configured in **[Step 2: Key/Value Caching with bkv](../bkv/index.md)**.
+In the guided journey, `bdb` turns the values loaded with
+**[Step 1: bconfig](../bconfig/index.md)** into durable SQL persistence alongside
+the temporary state introduced in **[Step 2: bkv](../bkv/index.md)**.
 
 [View source on GitHub](https://github.com/brian-nunez/bdb){ .md-button }
 
@@ -183,9 +185,11 @@ Handle these using `errors.Is(err, bdb.Err...)`.
 
 ---
 
-## Complete Composed Examples
+## Next Step: Object Storage
 
-Now that you have seen all three BKit components, check out how they combine to create robust Go service bootstraps:
+Your service can now load configuration, cache temporary values, and persist
+structured records. Files and binary assets have different access patterns and
+should not be forced into the database.
 
-*   **[Combined Config + KV + DB Example](../examples/config-kv-db.md)** — A complete walk-through of using BKit in a production-ready application.
-*   **[Service Bootstrap Patterns](../examples/service-bootstrap.md)** — Best practices for managing resource lifecycles, health checks, and startup validation.
+Proceed to **[Step 4: Object Storage with objex](../objex/index.md)** to add
+filesystem, AWS S3, or MinIO storage behind one streaming interface.

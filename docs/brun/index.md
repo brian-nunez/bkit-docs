@@ -96,3 +96,14 @@ func main() {
 	log.Println("Service stopped gracefully.")
 }
 ```
+
+---
+
+## Next Step: Service Hydration
+
+You can keep every constructor explicit, or use `bsuite` when your service wants
+a configuration-driven convenience layer for the common database, key/value,
+and telemetry setup.
+
+Proceed to **[Step 8: Service Hydration with bsuite](../bsuite/index.md)**, then
+see the complete composition in the **[BKit API Template](../api-template.md)**.

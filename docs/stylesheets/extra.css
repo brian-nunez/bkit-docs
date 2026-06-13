@@ -521,7 +521,7 @@ body {
 
 .bkit-system {
   position: relative;
-  min-height: 29rem;
+  min-height: 33rem;
   animation: bkit-rise 700ms 160ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
 }
 
@@ -592,7 +592,8 @@ body {
   right: 0;
 }
 
-.bkit-node--kv {
+.bkit-node--kv,
+.bkit-node--objex {
   left: 0;
 }
 
@@ -608,12 +609,17 @@ body {
   top: 22rem;
 }
 
+.bkit-node--objex {
+  top: 29rem;
+}
+
 .bkit-node--config::after,
 .bkit-node--db::after {
   right: 100%;
 }
 
-.bkit-node--kv::after {
+.bkit-node--kv::after,
+.bkit-node--objex::after {
   left: 100%;
 }
 
@@ -731,7 +737,7 @@ body {
 
 .bkit-flow {
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
   gap: 1.25rem;
   align-items: center;
   padding: 2.5rem 0;
@@ -940,7 +946,8 @@ body {
   .bkit-node--app,
   .bkit-node--config,
   .bkit-node--kv,
-  .bkit-node--db {
+  .bkit-node--db,
+  .bkit-node--objex {
     position: relative;
     top: auto;
     right: auto;

@@ -137,6 +137,7 @@ Handle these using `errors.Is(err, bkv.Err...)`.
 
 ## Next Step: Database Persistence
 
-With configuration loaded and temporary state cached, you can complete your application stack by connecting to a SQL database.
+With configuration loaded and temporary state cached, add durable structured
+records by connecting to a SQL database.
 
 Proceed to **[Step 3: Database Persistence with bdb](../bdb/index.md)** to see how to open structured connections using your loaded configuration.

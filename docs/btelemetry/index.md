@@ -77,3 +77,14 @@ The package exposes the following errors to handle configuration and initializat
 btelemetry.ErrInvalidConfig // Config constraints violated
 btelemetry.ErrInitFailed    // Exporter or resource initialization failed
 ```
+
+---
+
+## Next Step: Runtime Lifecycle
+
+With infrastructure initialized and telemetry active, the service needs one
+clear owner for its HTTP servers, workers, consumers, cancellation, and
+shutdown order.
+
+Proceed to **[Step 7: Lifecycle with brun](../brun/index.md)** to run concurrent
+components under one context-driven lifecycle.

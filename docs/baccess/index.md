@@ -2,6 +2,11 @@
 
 `baccess` is a predicate‑based authorization library for Go. It enables fine‑grained access control by combining simple boolean functions (predicates) into expressive policies. The library supports Role‑Based Access Control (RBAC) and Attribute‑Based Access Control (ABAC) through generic, type‑safe interfaces.
 
+In the guided journey, `baccess` sits at the application boundary after data
+stores are available and before a protected operation runs. It does not own
+HTTP handlers, databases, or objects; it answers the focused question: may this
+subject perform this action on this resource?
+
 [View source on GitHub](https://github.com/brian-nunez/baccess){ .md-button }
 
 ## Installation
@@ -99,3 +104,14 @@ if err != nil {
 For a deeper dive into the core concepts, types, predicate composition, and
 configuration format, see the
 [technical documentation](https://github.com/brian-nunez/baccess/blob/main/TECHNICAL.md).
+
+---
+
+## Next Step: Observability
+
+Authorization gives requests an explicit decision boundary. The service should
+also reveal how those requests behave in production without coupling business
+logic to an observability vendor.
+
+Proceed to **[Step 6: Observability with btelemetry](../btelemetry/index.md)**
+to add OpenTelemetry metrics and traces.

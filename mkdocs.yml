@@ -83,7 +83,7 @@ nav:
   - Templates:
       - API Template: api-template.md
   - Examples:
-      - Config + KV + DB: examples/config-kv-db.md
+      - Config + KV + DB + Objects + Access: examples/config-kv-db.md
       - Service Bootstrap: examples/service-bootstrap.md
   - Getting Started: getting-started.md
   - bconfig:
